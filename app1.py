@@ -5,7 +5,7 @@ from tensorflow import keras
 from keras.models import model_from_json
 from tensorflow.keras.utils import img_to_array
 # from keras.preprocessing.image import img_to_array
-from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, RTCConfiguration, VideoProcessorBase, WebRtcMode
+from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
 
 # load model
 emotion_dict = {0:'angry', 1 :'happy', 2: 'neutral', 3:'sad', 4: 'surprise'}
@@ -24,9 +24,7 @@ try:
 except Exception:
     st.write("Error loading cascade classifiers")
 
-RTC_CONFIGURATION = RTCConfiguration({"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]})
-
-class Faceemotion(VideoTransformerBase):
+class VideoTransformer(VideoTransformerBase):
     def transform(self, frame):
         img = frame.to_ndarray(format="bgr24")
 
@@ -58,8 +56,9 @@ def main():
     activiteis = ["Home", "Webcam Face Detection", "About"]
     choice = st.sidebar.selectbox("Select Activity", activiteis)
     st.sidebar.markdown(
-        """ Developed by Aman Ray    
-            Email : amanray113114@gmail.com  """)
+        """ Made by Aman Ray    
+            Email : amanray113114@gmail.com
+            [LinkedIn] (https://www.linkedin.com/in/amanray/)""")
     if choice == "Home":
         html_temp_home1 = """<div style="background-color:#6D7B8D;padding:10px">
                                             <h4 style="color:white;text-align:center;">
@@ -78,8 +77,7 @@ def main():
     elif choice == "Webcam Face Detection":
         st.header("Webcam Live Feed")
         st.write("Click on start to use webcam and detect your face emotion")
-        webrtc_streamer(key="example", mode=WebRtcMode.SENDRECV, rtc_configuration=RTC_CONFIGURATION,
-                        video_processor_factory=Faceemotion)
+        webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
 
     elif choice == "About":
         st.subheader("About this app")
@@ -92,8 +90,8 @@ def main():
 
         html_temp4 = """
                              		<div style="background-color:#98AFC7;padding:10px">
-                             		<h4 style="color:white;text-align:center;">This Application is developed by Aman using Streamlit Framework, Opencv, Tensorflow and Keras library for demonstration purpose.</h4>
-                             		<h4 style="color:white;text-align:center;">Thanks for Visiting</h4>
+                             		<h4 style="color:white;text-align:center;">This Application is developed by Aman ray using Streamlit Framework, Opencv, Tensorflow and Keras library for demonstration purpose. </h4>
+                             		<h4 style="color:white;text-align:center;">Thank you</h4>
                              		</div>
                              		<br></br>
                              		<br></br>"""
